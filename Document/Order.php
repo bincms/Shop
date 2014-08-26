@@ -3,7 +3,7 @@
 namespace Extension\Shop\Document;
 
 use BinCMS\Document\Address;
-use Extension\User\Document\User;
+use BinCMS\Document\User;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -40,7 +40,7 @@ class Order
     protected $reserve;
 
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Extension\User\Document\User", simple=true)
+     * @MongoDB\ReferenceOne(targetDocument="BinCMS\Document\User", simple=true)
      */
     protected $customer;
 
@@ -166,7 +166,7 @@ class Order
     }
 
     /**
-     * @return User
+     * @return \BinCMS\Document\User
      */
     public function getCustomer()
     {
@@ -174,7 +174,7 @@ class Order
     }
 
     /**
-     * @param User $customer
+     * @param \BinCMS\Document\User $customer
      */
     public function setCustomer(User $customer)
     {

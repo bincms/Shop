@@ -2,8 +2,8 @@
 
 namespace Extension\Shop\Document;
 
+use BinCMS\Document\User;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Extension\User\Document\User;
 
 /**
  * @MongoDB\Document(repositoryClass="Extension\Shop\Repository\CartRepository")
@@ -16,7 +16,7 @@ class Cart
     protected $id;
 
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Extension\User\Document\User")
+     * @MongoDB\ReferenceOne(targetDocument="BinCMS\Document\User")
      */
     protected $user;
 
@@ -47,7 +47,7 @@ class Cart
     }
 
     /**
-     * @return \Extension\User\Document\User
+     * @return \BinCMS\Document\User
      */
     public function getUser()
     {
@@ -55,7 +55,7 @@ class Cart
     }
 
     /**
-     * @param \Extension\User\Document\User $user
+     * @param \BinCMS\Document\User $user
      */
     public function setUser(User $user = null)
     {
