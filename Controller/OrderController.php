@@ -201,11 +201,9 @@ class OrderController
                             }
                         }
 
-                        if($productAvailability < $item['quantity']) {
-                            $noProducts[] = $product;
-
-
-                        }
+//                        if($productAvailability < $item['quantity']) {
+//                            $noProducts[] = $product;
+//                        }
                     }
 
                     $orderProduct = new OrderProduct();
@@ -218,11 +216,11 @@ class OrderController
             }
         }
 
-        if(sizeof($noProducts) > 0) {
-            return $app->json([
-                'noProducts' => $this->converterService->convert($noProducts)
-            ], 400);
-        }
+//        if(sizeof($noProducts) > 0) {
+//            return $app->json([
+//                'noProducts' => $this->converterService->convert($noProducts)
+//            ], 400);
+//        }
 
         $orderNumber = $this->counterRepository->getCounter('order')->getValue();
 
