@@ -282,7 +282,7 @@ class Extension extends BaseExtension
                 $app['extension.shop.repository.filter']
             ),
             new SphinxIndexCommand(
-                $this['extension.shop.service.sphinx_loader']
+                $app['extension.shop.service.sphinx_loader']
             )
         ];
     }
