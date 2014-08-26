@@ -3,6 +3,7 @@
 namespace Extension\Shop\Repository;
 
 use BinCMS\RepositoryTrait\ExtendRepositoryTrait;
+use BinCMS\RepositoryTrait\RepositoryExtendTrait;
 use BinCMS\RepositoryTrait\RepositoryExternalTrait;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Extension\Shop\Repository\Interfaces\ProductRepositoryInterface;
@@ -11,7 +12,7 @@ use Extension\Shop\Repository\Traits\DocumentRepositoryFindAllWithFilteredMethod
 
 class ProductRepository extends DocumentRepository implements \Countable, ProductRepositoryInterface
 {
-    use ExtendRepositoryTrait;
+    use RepositoryExtendTrait;
     use DocumentRepositoryCounted;
     use DocumentRepositoryFindAllWithFilteredMethod;
     use RepositoryExternalTrait;
