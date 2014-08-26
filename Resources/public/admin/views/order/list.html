@@ -1,0 +1,42 @@
+<div class="row sub-header">
+    <h3>Заказы</h3>
+</div>
+<div class="row">
+    <table class="table table-hover">
+        <tr>
+            <th class="col-sm-2">Номер</th>
+            <th class="col-sm-2">Дата</th>
+            <th class="col-sm-2">Резерв до</th>
+            <th class="col-sm-2"></th>
+            <th class="col-sm-2">Статус</th>
+            <th class="col-sm-2"></th>
+        </tr>
+        <tr ng-repeat="order in orders">
+            <td>
+                <span ng-bind="order.number"></span>
+            </td>
+            <td>
+                <span ng-bind="order.created | date:'dd MMMM yyyy'"></span>
+            </td>
+            <td>
+                <span ng-bind="order.reserve | date:'dd MMMM yyyy'"></span>
+            </td>
+            <td>
+
+            </td>
+            <td ng-switch on="order.status===null">
+                <span ng-switch-when="true">Не обработан</span>
+                <span ng-switch-when="false">
+                    {{ order.status.title }}
+                </span>
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-info btn-xs" href="#" ui-sref="extension.shop.order.update({id: order.id})">Редактировать</a>
+                    <button class="btn btn-danger btn-xs" ng-click="onOrderRemoveClick(order)">Удалить</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div bc-pagination total="pagination.totalPages" size="pagination.perPage" current="pagination.current" on-select="onSelectPage(page)"></div>
+</div>

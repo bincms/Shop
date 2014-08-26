@@ -1,0 +1,35 @@
+<div class="row sub-header">
+    <h3>Доставка</h3>
+    <a href="#" ui-sref="extension.shop.delivery.create" class="btn btn-success pull-right">
+        <i class="fa fa-plus"></i>
+        Добавить
+    </a>
+</div>
+<div class="row">
+    <table class="table table-hover">
+        <tr>
+            <th class="col-sm-6">Наименование</th>
+            <th class="col-sm-2">Соимость</th>
+            <th class="col-sm-2">Включен</th>
+            <th class="col-sm-2"></th>
+        </tr>
+        <tr ng-repeat="delivery in deliveries">
+            <td>
+                <span ng-bind="delivery.title"></span>
+            </td>
+            <td>
+                <span ng-bind="delivery.price"></span>
+            </td>
+            <td>
+                <span class="fa fa-check-circle" ng-if="delivery.enabled"></span>
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-info btn-xs" href="#" ui-sref="extension.shop.delivery.update({id: delivery.id})">Редактировать</a>
+                    <button class="btn btn-danger btn-xs" ng-click="onDeliveryRemoveClick(delivery)">Удалить</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div bc-pagination total="pagination.totalPages" size="pagination.perPage" current="pagination.current" on-select="onSelectPage(page)"></div>
+</div>

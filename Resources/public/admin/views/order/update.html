@@ -1,0 +1,117 @@
+<div class="row sub-header">
+    <h3>Заказ</h3>
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Дата заказа:</label>
+                <div class="col-sm-8">
+                    <p class="form-control-static" ng-bind="order.created | date:'dd MMMM yyyy'"></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Резер до:</label>
+                <div class="col-sm-8">
+                    <p class="form-control-static" ng-bind="order.reserve | date:'dd MMMM yyyy'"></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Статус:</label>
+                <div class="col-sm-8">
+                    <p class="form-control-static" ng-switch on="order.status===null">
+                        <span ng-switch-when="true">
+                            <span ng-if="order.isCanceled">Отменен клиентом</span>
+                            <span ng-if="!order.isCanceled">Не обработан</span>
+                        </span>
+                        <span ng-switch-when="false" ng-bind="order.status.title"></span>
+                    </p>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="col-sm-4">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Способ доставки:</label>
+                <div class="col-sm-8">
+                    <p class="form-control-static" ng-switch on="order.delivery===null">
+                        <span ng-switch-when="false">Доставка,</span>
+                        <span ng-switch-when="true">Самовывоз,</span>
+                        <span>
+                            {{ order.address.city }}, {{ order.address.street }}, {{ order.address.house }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Сумма заказа:</label>
+                <div class="col-sm-8">
+                    <p class="form-control-static" ng-bind="order.totalPrice"></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Доставка:</label>
+                <div class="col-sm-8">
+                    <p class="form-control-static" ng-switch on="order.delivery===null">
+                        <span ng-switch-when="true">0</span>
+                        <span ng-switch-when="false" ng-bind="order.delivery.price"></span>
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-8">
+        <table class="table">
+            <tr>
+                <th>№</th>
+                <th>Наименование товара</th>
+                <th>Кол-во</th>
+                <th>Цена, руб.</th>
+                <th>Сумма, руб.</th>
+            </tr>
+            <tr ng-repeat="orderProduct in order.products">
+                <td>
+                    <span ng-bind="$index+1"></span>
+                </td>
+                <td>
+                    <span ng-bind="orderProduct.title"></span>
+                </td>
+                <td>
+                    <span ng-bind="orderProduct.quantity"></span>
+                </td>
+                <td>
+                    <span ng-bind="orderProduct.price.retail"></span>
+                </td>
+                <td>
+                    <span ng-bind="orderProduct.quantity * orderProduct.price.retail"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-8">
+        <form name="orderForm" class="form-horizontal" ng-submit="onSave(orderForm, orderModel)" form-validate novalidate>
+            <!--<div class="form-group">-->
+                <!--<label class="col-md-2 control-label">Статус</label>-->
+                <!--<div class="col-sm-10">-->
+                    <!--<input ng-model="orderModel.title" form-input-validate type="text" name="title" placeholder="Наименование" class="form-control" required>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="pull-right">
+                        <!--<button type="submit" class="btn btn-primary">Сохранить</button>-->
+                        <a type="button" class="btn btn-default" href="" ui-sref="extension.shop.order.list">Отмена</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-3">
+    </div>
+</div>

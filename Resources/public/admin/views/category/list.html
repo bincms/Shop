@@ -1,0 +1,37 @@
+<div class="row sub-header">
+    <h3>Категории</h3>
+    <a href="#" ui-sref="extension.shop.category.create" class="btn btn-success pull-right">
+        <i class="fa fa-plus"></i>
+        Добавить
+    </a>
+</div>
+<ol class="row breadcrumb">
+    <li>
+        <a href="#" ng-click="onLoadRootChildClick()">Каталог</a>
+    </li>
+    <li ng-repeat="item in breadcrumb">
+        <a href="#" ng-click="onLoadChildClick(item.id)" ng-bind="item.title"></a>
+    </li>
+</ol>
+<div class="row">
+    <table class="table table-hover">
+        <tr>
+            <th class="col-sm-9">Наименование</th>
+            <th class="col-sm-3"></th>
+        </tr>
+        <tr ng-repeat="category in categories">
+            <td>
+                <button type="button" class="btn btn-link" ng-click="onLoadChildClick(category.id)">
+                    <span ng-bind="category.title"></span>
+                </button>
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-warning btn-xs" href="#" ui-sref="extension.shop.product.list({id: category.id})">Товары</a>
+                    <a class="btn btn-info btn-xs" href="#" ui-sref="extension.shop.category.update({id: category.id})">Редактировать</a>
+                    <button class="btn btn-danger btn-xs" ng-click="onCategoryRemoveClick(category)">Удалить</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

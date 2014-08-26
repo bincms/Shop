@@ -1,0 +1,65 @@
+<div class="row sub-header">
+    <h3>Товары</h3>
+    <a href="#" ui-sref="extension.shop.product.create" class="btn btn-success pull-right">
+        <i class="fa fa-plus"></i>
+        Добавить
+    </a>
+</div>
+
+<div class="row">
+    <div class="filter-panel">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Поиск по" ng-keyup="onFilterQueryKeyUp($event)">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle"
+                        ng-model="filter.selected"
+                        ng-options="filter.value as filter.label for filter in filters"
+                        bs-select>Action <span class="caret"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+
+
+    <table class="table table-hover">
+        <tr>
+            <th class="col-sm-2">Артикул</th>
+            <th class="col-sm-4">Наименование</th>
+            <th class="col-sm-1">Кол-во</th>
+            <th class="col-sm-1">Лидер</th>
+            <th class="col-sm-1">Новинка</th>
+            <th class="col-sm-1">Цена</th>
+            <th class="col-sm-2"></th>
+        </tr>
+        <tr ng-repeat="product in products">
+            <td>
+                <span ng-bind="product.sku"></span>
+            </td>
+            <td>
+                <span ng-bind="product.title"></span>
+            </td>
+            <td>
+                <span ng-bind="product.availability"></span>
+            </td>
+            <td>
+                <span class="fa fa-check-circle" ng-if="product.isLeader"></span>
+            </td>
+            <td>
+                <span class="fa fa-check-circle" ng-if="product.isNew"></span>
+            </td>
+            <td>
+                <span ng-bind="product.price.retail"></span>
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-info btn-xs" href="#" ui-sref="extension.shop.product.update({id: product.id})">Редактировать</a>
+                    <button class="btn btn-danger btn-xs" ng-click="onProductRemoveClick(product)">Удалить</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div bc-pagination total="pagination.totalPages" size="pagination.perPage" current="pagination.current" on-select="onSelectPage(page)"></div>
+</div>

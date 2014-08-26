@@ -1,0 +1,143 @@
+<div class="row sub-header">
+    <h3>Магазин</h3>
+</div>
+<div class="row">
+    <div class="col-sm-9">
+        <div class="form-group">
+            <input type="text" class="form-control" ng-model="selected.address"
+                   name="googleAddress"
+                   bs-typeahead
+                   ng-options="address as address.formatted_address for address in searchAddress($viewValue)"
+                   placeholder="Поиск адреса">
+        </div>
+
+        <form name="shopForm" class="form-horizontal" ng-submit="onSave(shopForm, shopModel)" form-validate novalidate>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Наименование</label>
+                <div class="col-sm-10">
+                    <input ng-model="shopModel.title" form-input-validate type="text" name="title" placeholder="Наименование" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Страна</label>
+                <div class="col-sm-10">
+                    <input ng-model="shopModel.country" form-input-validate type="text" name="country" placeholder="Страна" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Город</label>
+                <div class="col-sm-10">
+                    <input ng-model="shopModel.city" form-input-validate type="text" name="city" placeholder="Город" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Улица</label>
+                <div class="col-sm-10">
+                    <input ng-model="shopModel.street" form-input-validate type="text" name="street" placeholder="Улица" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Дом</label>
+                <div class="col-sm-10">
+                    <input ng-model="shopModel.house" form-input-validate type="text" name="house" placeholder="Дом" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Координаты</label>
+                <div class="col-sm-5">
+                    <input ng-model="shopModel.lat" form-input-validate type="text" name="lat" placeholder="Широта" class="form-control">
+                </div>
+                <div class="col-sm-5">
+                    <input ng-model="shopModel.lng" form-input-validate type="text" name="lng" placeholder="Долгота" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Склады</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <button type="button" class="form-control" name="warehouseSearch"
+                               bs-select
+                               ng-model="selected.warehouse"
+                               ng-options="warehouse as warehouse.title for warehouse in warehouses"
+                               data-placeholder="Выбирете склад">Выбирете склад</button>
+                          <span class="input-group-btn">
+                            <button class="btn btn-success" type="button" ng-click="addWarehouse(selected.warehouse)">Добавить</button>
+                          </span>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="warehouse in shopModel.warehouses">
+                                    {{ warehouse.title }}
+                                    <button class="btn btn-danger btn-xs pull-right" type="button" ng-click="removeWarehouse(warehouse)">Удалить</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-12 control-label" style="text-align: center;border-bottom: 1px dashed #bfbfbf;">
+                    Режим работы
+                </label>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <button class="btn btn-success pull-right" ng-click="onAddSheduleClick()" type="button">Добавить режим работы</button>
+                </div>
+            </div>
+
+            <div class="form-group" ng-repeat="shedule in shopModel.shedule.values track by $index">
+
+                <div class="row">
+                    <label class="col-md-2 control-label">День недели c</label>
+                    <div class="col-sm-10">
+                        <button type="button" class="btn btn-default" ng-model="shedule.dayWeekFrom" data-html="1" ng-options="dayWeek.value as dayWeek.value for dayWeek in daysWeek" bs-select>
+                            Action <span class="caret"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-md-2 control-label">День недели по</label>
+                    <div class="col-sm-10">
+                        <button type="button" class="btn btn-default" ng-model="shedule.dayWeekTo" data-html="1" ng-options="dayWeek.value as dayWeek.value for dayWeek in daysWeek" bs-select>
+                            Action <span class="caret"></span>
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-md-2 control-label">Время работы с</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" data-autoclose="1" data-time-format="HH:mm" data-time-type="string" data-minute-step="5" ng-model="shedule.timeFrom" name="time" bs-timepicker>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-md-2 control-label">Время работы по</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" data-autoclose="1" data-time-format="HH:mm" data-time-type="string" data-minute-step="5" ng-model="shedule.timeTo" name="time" bs-timepicker>
+                    </div>
+                </div>
+
+
+                <button type="button" class="btn btn-danger pull-right" ng-click="onRemoveSheduleClick($index)">Удалить</button>
+
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary">Добавить</button>
+                        <a type="button" class="btn btn-default" href="" ui-sref="extension.shop.list">Отмена</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-3">
+    </div>
+</div>
