@@ -264,7 +264,7 @@ class Extension extends BaseExtension
 
     public function getCommands(Application $app)
     {
-        $app['bincms.service.sphinx_loader']->registerReader(new ProductReader($app['extension.shop.repository.product']));
+        $app['extension.shop.service.sphinx_loader']->registerReader(new ProductReader($app['extension.shop.repository.product']));
 
         return [
             new ImportCatalogCommand(
