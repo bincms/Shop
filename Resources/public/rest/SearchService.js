@@ -8,9 +8,7 @@ var SearchServiceProvider = Class.extend({
     $get: ['$resource',
         function ($resource) {
             var resourceUrl = '/api/extension/Shop/search';
-            return $resource(resourceUrl, null, {
-                query: { method: 'POST', url: resourceUrl}
-            });
+            return $resource(resourceUrl);
         }
     ]
 });

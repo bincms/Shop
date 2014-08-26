@@ -33,7 +33,7 @@ class SearchController
     }
 
     /**
-     * @Route(pattern="/", method="POST")
+     * @Route(pattern="/", method="GET")
      * @param Application $app
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
