@@ -2,16 +2,16 @@
 
 namespace Extension\Shop\Repository;
 
-use BinCMS\RepositoryTrait\ExtendRepositoryTrait;
+use BinCMS\RepositoryTrait\RepositoryExtendTrait;
+use BinCMS\RepositoryTrait\RepositoryMaterializedPathFilteredTrait;
 use Extension\Shop\Document\Category;
 use Extension\Shop\Repository\Interfaces\CategoryRepositoryInterface;
-use Extension\Shop\Repository\Traits\MaterializedPathRepositoryFindAllWithFilteredMethod;
 use Gedmo\Tree\Document\MongoDB\Repository\MaterializedPathRepository;
 
 class CategoryRepository extends MaterializedPathRepository implements CategoryRepositoryInterface
 {
-    use \BinCMS\RepositoryTrait\ExtendRepositoryTrait;
-    use MaterializedPathRepositoryFindAllWithFilteredMethod;
+    use RepositoryExtendTrait;
+    use RepositoryMaterializedPathFilteredTrait;
 
     /**
      * @param $title

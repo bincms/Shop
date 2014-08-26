@@ -2,14 +2,14 @@
 
 namespace Extension\Shop\Repository;
 
-use BinCMS\RepositoryTrait\ExtendRepositoryTrait;
+use BinCMS\RepositoryTrait\RepositoryExtendTrait;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Extension\Shop\Repository\Interfaces\CartRepositoryInterface;
 use Extension\User\Document\User;
 
 class CartRepository extends DocumentRepository implements CartRepositoryInterface
 {
-    use \BinCMS\RepositoryTrait\ExtendRepositoryTrait;
+    use RepositoryExtendTrait;
 
     public function findByUserOrId($value)
     {

@@ -3,7 +3,7 @@
 namespace Extension\Shop\Document;
 
 use BinCMS\Document\Shedule;
-use BinCMS\DocumentTrait\LocationTrait;
+use BinCMS\DocumentTrait\DocumentLocationTrait;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
@@ -11,7 +11,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  */
 class Shop
 {
-    use LocationTrait;
+    use DocumentLocationTrait;
 
     /**
      * @MongoDB\Id()

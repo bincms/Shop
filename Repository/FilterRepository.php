@@ -2,12 +2,12 @@
 
 namespace Extension\Shop\Repository;
 
-use BinCMS\RepositoryTrait\ExtendRepositoryTrait;
+use BinCMS\RepositoryTrait\RepositoryExtendTrait;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
 class FilterRepository extends DocumentRepository
 {
-    use ExtendRepositoryTrait;
+    use RepositoryExtendTrait;
 
     public function findAllByCategoryId($categoryId)
     {

@@ -2,14 +2,14 @@
 
 namespace Extension\Shop\Repository;
 
-use BinCMS\RepositoryTrait\ExtendRepositoryTrait;
+use BinCMS\RepositoryTrait\RepositoryExtendTrait;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Extension\Shop\Document\ImportProcess;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 class ImportProcessRepository extends DocumentRepository
 {
-    use \BinCMS\RepositoryTrait\ExtendRepositoryTrait;
+    use RepositoryExtendTrait;
 
     public function start()
     {
