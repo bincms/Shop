@@ -35,6 +35,12 @@ class Product extends Element
         return $this->getChildValue('Артикул', '');
     }
 
+    public function getUnit()
+    {
+        return $this->getChildValue('БазоваяЕдиница', '');
+    }
+
+
     /**
      * @return GroupElement
      */

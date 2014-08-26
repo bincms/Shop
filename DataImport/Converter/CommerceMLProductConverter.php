@@ -81,6 +81,7 @@ class CommerceMLProductConverter implements ConverterInterface
             'description' => $data->getDescription(),
             'category' => $category,
             'image' => $image,
+            'unit' => $data->getUnit(),
             'properties' => $propertyValues
         ];
     }
