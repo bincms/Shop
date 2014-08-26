@@ -67,7 +67,7 @@ class Extension extends BaseExtension
             ->registerDataRepository($this, 'Warehouse')
         ;
 
-        $this['extension.shop.service.sphinx_client'] = $this->share(function() {
+        $app['extension.shop.service.sphinx_client'] = $app->share(function() {
             $instance = new SphinxClient();
 
             $instance->setServer("localhost", 9312);
@@ -78,7 +78,7 @@ class Extension extends BaseExtension
             return $instance;
         });
 
-        $this['extension.shop.service.sphinx_loader'] = $this->share(function() {
+        $app['extension.shop.service.sphinx_loader'] = $app->share(function() {
             return new SphinxLoader();
         });
 
