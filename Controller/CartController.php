@@ -40,17 +40,15 @@ class CartController
      * @var \Symfony\Component\HttpFoundation\Session\Session
      */
     private $session;
-    private $cartIdStoreKey;
 
     public function __construct(CartRepositoryInterface $cartRepository, ProductRepositoryInterface $productRepository,
-                                Session $session, $cartIdStoreKey, ConverterService $converterService, Validator $validator)
+                                Session $session, ConverterService $converterService, Validator $validator)
     {
         $this->cartRepository = $cartRepository;
         $this->productRepository = $productRepository;
         $this->converterService = $converterService;
         $this->validator = $validator;
         $this->session = $session;
-        $this->cartIdStoreKey = $cartIdStoreKey;
     }
 
     /**

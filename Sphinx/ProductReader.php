@@ -3,8 +3,8 @@
 
 namespace Extension\Shop\Sphinx;
 
-use BinCMS\SphinxXml\ReaderInterface;
-use BinCMS\SphinxXml\SphinxDocument;
+use Extension\Shop\SphinxXml\ReaderInterface;
+use Extension\Shop\SphinxXml\SphinxDocument;
 use Extension\Shop\Repository\Interfaces\ProductRepositoryInterface;
 
 class ProductReader implements ReaderInterface

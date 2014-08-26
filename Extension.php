@@ -5,7 +5,7 @@ namespace Extension\Shop;
 use BinCMS\BaseExtension;
 use BinCMS\DataImport\Writer\DoctrineWriter;
 use Extension\Shop\Command\BuildFilterCommand;
-use Extension\Shop\Command\ImportOffersCommand;
+use Extension\Shop\Command\SphinxIndexCommand;
 use Extension\Shop\Converter\CartConverter;
 use Extension\Shop\Converter\CartItemConverter;
 use Extension\Shop\Command\ImportCatalogCommand;
@@ -34,12 +34,12 @@ use Extension\Shop\Facade\ImportProductFacade;
 use Extension\Shop\Facade\ImportPropertyFacade;
 use Extension\Shop\Facade\ImportWarehouseFacade;
 use Extension\Shop\Sphinx\ProductReader;
+use Extension\Shop\SphinxXml\SphinxLoader;
+use NilPortugues\Sphinx\SphinxClient;
 use Silex\Application;
 
 class Extension extends BaseExtension
 {
-    const cartIdStoreKey = 'extension.Shop.cartId';
-
     /**
      * Registers services on the given app.
      *
@@ -66,6 +66,21 @@ class Extension extends BaseExtension
             ->registerDataRepository($this, 'Filter')
             ->registerDataRepository($this, 'Warehouse')
         ;
+
+        $this['extension.shop.service.sphinx_client'] = $this->share(function() {
+            $instance = new SphinxClient();
+
+            $instance->setServer("localhost", 9312);
+            $instance->setMatchMode(\SPH_MATCH_ANY);
+            $instance->setMaxQueryTime(3);
+            $instance->setArrayResult(true);
+
+            return $instance;
+        });
+
+        $this['extension.shop.service.sphinx_loader'] = $this->share(function() {
+            return new SphinxLoader();
+        });
 
         $app['extension.shop.import_offer_facade'] = $app->share(function($app) {
 
@@ -205,7 +220,6 @@ class Extension extends BaseExtension
                     $app['extension.shop.repository.cart'],
                     $app['extension.shop.repository.product'],
                     $app['session'],
-                    self::cartIdStoreKey,
                     $app['service.converter'],
                     $app['validator']
                 ];
@@ -215,6 +229,13 @@ class Extension extends BaseExtension
                     $app['extension.shop.repository.product_property'],
                     $app['extension.shop.repository.product'],
                     $app['extension.shop.repository.filter'],
+                    $app['service.converter'],
+                ];
+            })
+            ->registerExtensionController($this, 'Controller\\SearchController', 'search', function ($app) {
+                return [
+                    $app['extension.shop.service.sphinx_client'],
+                    $app['extension.shop.repository.product'],
                     $app['service.converter'],
                 ];
             })
@@ -259,6 +280,9 @@ class Extension extends BaseExtension
             new BuildFilterCommand(
                 $app['extension.shop.repository.product'],
                 $app['extension.shop.repository.filter']
+            ),
+            new SphinxIndexCommand(
+                $this['extension.shop.service.sphinx_loader']
             )
         ];
     }
