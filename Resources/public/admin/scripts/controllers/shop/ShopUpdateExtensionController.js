@@ -40,14 +40,15 @@ var ShopUpdateExtensionController = BaseController.extend({
 
     onSelectedGoogleAddress: function (event, address) {
         var address = this.googleService.extractAddress(address);
-        this.$scope.shopModel.country = address.country.name.long;
-        this.$scope.shopModel.city = address.locality.name.short;
-        this.$scope.shopModel.street = address.route ? address.route.name.short : '';
-        this.$scope.shopModel.house = address.street_number ? address.street_number.name.short : '';
+
+        this.$scope.shopModel.address.country = address.country.name.long;
+        this.$scope.shopModel.address.city = address.locality.name.short;
+        this.$scope.shopModel.address.street = address.route ? address.route.name.short : '';
+        this.$scope.shopModel.address.house = address.street_number ? address.street_number.name.short : '';
 
         if (address.location) {
-            this.$scope.shopModel.lat = address.location.lat;
-            this.$scope.shopModel.lng = address.location.lng;
+            this.$scope.shopModel.location.lat = address.location.lat;
+            this.$scope.shopModel.location.lng = address.location.lng;
         }
     },
 
@@ -98,18 +99,8 @@ var ShopUpdateExtensionController = BaseController.extend({
         this.$scope.selected = {
             warehouse: null
         };
+
         this.$scope.shopModel = this.shop;
-//        {
-//            title: this.shop.title,
-//            country: this.shop.address.country,
-//            city: this.shop.address.city,
-//            street: this.shop.address.street,
-//            house: this.shop.address.house,
-//            lat: this.shop.location.lat,
-//            lng: this.shop.location.lng,
-//            shedule: this.shop.shedule,
-//            warehouses: this.shop.warehouses
-//        };
     },
 
     destroy: function () {

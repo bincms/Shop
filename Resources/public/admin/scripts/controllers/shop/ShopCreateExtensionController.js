@@ -13,15 +13,19 @@ var ShopCreateExtensionController = BaseController.extend({
     getDefaultShopModel: function () {
         return {
             title: '',
-            country: '',
             shedule: {
                 values: []
             },
-            city: '',
-            street: '',
-            house: '',
-            lat: '',
-            lng: '',
+            address: {
+                country: '',
+                city: '',
+                street: '',
+                house: ''
+            },
+            location: {
+                lat: '',
+                lng: ''
+            },
             warehouses: []
         };
     },
@@ -50,14 +54,15 @@ var ShopCreateExtensionController = BaseController.extend({
 
     onSelectedGoogleAddress: function (event, address) {
         var address = this.googleService.extractAddress(address);
-        this.$scope.shopModel.country = address.country.name.long;
-        this.$scope.shopModel.city = address.locality.name.short;
-        this.$scope.shopModel.street = address.route ? address.route.name.short : '';
-        this.$scope.shopModel.house = address.street_number ? address.street_number.name.short : '';
+
+        this.$scope.shopModel.address.country = address.country.name.long;
+        this.$scope.shopModel.address.city = address.locality.name.long;
+        this.$scope.shopModel.address.street = address.route ? address.route.name.short : '';
+        this.$scope.shopModel.address.house = address.street_number ? address.street_number.name.short : '';
 
         if (address.location) {
-            this.$scope.shopModel.lat = address.location.lat;
-            this.$scope.shopModel.lng = address.location.lng;
+            this.$scope.shopModel.location.lat = address.location.lat;
+            this.$scope.shopModel.location.lng = address.location.lng;
         }
     },
 

@@ -2,6 +2,7 @@
 
 namespace Extension\Shop\Controller;
 
+use BinCMS\Annotations\Route;
 use BinCMS\Converter\ConverterService;
 use BinCMS\Document\Address;
 use BinCMS\Document\Location;
@@ -16,7 +17,6 @@ use Extension\Shop\Repository\Interfaces\WarehouseRepositoryInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator;
-use BinCMS\Annotations\Route;
 
 class ShopController
 {
@@ -90,13 +90,13 @@ class ShopController
         $shopAddress = new Address();
         $shopLocation = new Location();
 
-        $shopLocation->setLat($shopForm->lat);
-        $shopLocation->setLng($shopForm->lng);
+        $shopLocation->setLat($shopForm->location->lat);
+        $shopLocation->setLng($shopForm->location->lng);
 
-        $shopAddress->setCountry($shopForm->country);
-        $shopAddress->setCity($shopForm->city);
-        $shopAddress->setStreet($shopForm->street);
-        $shopAddress->setHouse($shopForm->house);
+        $shopAddress->setCountry($shopForm->address->country);
+        $shopAddress->setCity($shopForm->address->city);
+        $shopAddress->setStreet($shopForm->address->street);
+        $shopAddress->setHouse($shopForm->address->house);
 
         $shop->setTitle($shopForm->title);
         $shop->setAddress($shopAddress);
@@ -167,13 +167,13 @@ class ShopController
             $shopAddress = new Address();
         }
 
-        $shopLocation->setLat($shopForm->lat);
-        $shopLocation->setLng($shopForm->lng);
+        $shopLocation->setLat($shopForm->location->lat);
+        $shopLocation->setLng($shopForm->location->lng);
 
-        $shopAddress->setCountry($shopForm->country);
-        $shopAddress->setCity($shopForm->city);
-        $shopAddress->setStreet($shopForm->street);
-        $shopAddress->setHouse($shopForm->house);
+        $shopAddress->setCountry($shopForm->address->country);
+        $shopAddress->setCity($shopForm->address->city);
+        $shopAddress->setStreet($shopForm->address->street);
+        $shopAddress->setHouse($shopForm->address->house);
 
         $shop->setTitle($shopForm->title);
         $shop->setAddress($shopAddress);

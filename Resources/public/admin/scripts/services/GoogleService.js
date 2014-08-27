@@ -12,7 +12,7 @@ var GoogleService = Class.extend({
             return [];
         }
 
-        var params = {address: value, sensor: false};
+        var params = {address: value, sensor: false, language: 'ru'};
         return this.httpService.get('http://maps.googleapis.com/maps/api/geocode/json', {params: params})
             .then(function (response) {
                 return response.data.results;
