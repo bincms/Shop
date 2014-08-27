@@ -42,7 +42,7 @@ var ShopUpdateExtensionController = BaseController.extend({
         var address = this.googleService.extractAddress(address);
 
         this.$scope.shopModel.address.country = address.country.name.long;
-        this.$scope.shopModel.address.city = address.locality.name.short;
+        this.$scope.shopModel.address.city = address.locality.name.long;
         this.$scope.shopModel.address.street = address.route ? address.route.name.short : '';
         this.$scope.shopModel.address.house = address.street_number ? address.street_number.name.short : '';
 
