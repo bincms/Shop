@@ -8,7 +8,7 @@ class OrderCreateAfterEvent
 {
     const NAME = 'order.event.afterCreate';
     /**
-     * @var Order
+     * @var
      */
     private $order;
 

@@ -74,6 +74,11 @@ class Product
      */
     protected $properties;
 
+    /**
+     * @MongoDB\String()
+     */
+    protected $unit;
+
     public function __construct()
     {
         $this->availability = [];
@@ -273,6 +278,22 @@ class Product
     public function setProperties($properties)
     {
         $this->properties = $properties;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUnit()
+    {
+        return $this->unit;
+    }
+
+    /**
+     * @param mixed $unit
+     */
+    public function setUnit($unit)
+    {
+        $this->unit = $unit;
     }
 
 }

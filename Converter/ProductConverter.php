@@ -30,6 +30,7 @@ class ProductConverter implements ConverterInterface
             'availability' => $product->getAvailability(),
             'fullAvailability' => $fullAvailability,
             'image' => $converterService->convert($product->getImage()),
+            'unit' => $product->getUnit(),
             'isNew' => $product->getIsNew(),
             'isLeader' => $product->getIsLeader()
         ];
