@@ -2,9 +2,10 @@
 
 namespace Extension\Shop\Event\Order;
 
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrderCreateBeforeEvent
+class OrderCreateBeforeEvent extends Event
 {
     const NAME = 'order.event.beforeCreate';
     /**

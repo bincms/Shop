@@ -3,8 +3,9 @@
 namespace Extension\Shop\Event\Order;
 
 use Extension\Shop\Document\Order;
+use Symfony\Component\EventDispatcher\Event;
 
-class OrderCreateAfterEvent
+class OrderCreateAfterEvent extends Event
 {
     const NAME = 'order.event.afterCreate';
     /**
