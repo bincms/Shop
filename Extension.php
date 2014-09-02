@@ -64,10 +64,9 @@ class Extension extends BaseExtension
             ->registerDataRepository($this, 'Shop')
             ->registerDataRepository($this, 'Cart')
             ->registerDataRepository($this, 'Filter')
-            ->registerDataRepository($this, 'Warehouse')
-        ;
+            ->registerDataRepository($this, 'Warehouse');
 
-        $app['extension.shop.service.sphinx_client'] = $app->share(function() {
+        $app['extension.shop.service.sphinx_client'] = $app->share(function () {
             $instance = new SphinxClient();
 
             $instance->setServer("localhost", 9312);
@@ -78,11 +77,11 @@ class Extension extends BaseExtension
             return $instance;
         });
 
-        $app['extension.shop.service.sphinx_loader'] = $app->share(function() {
+        $app['extension.shop.service.sphinx_loader'] = $app->share(function () {
             return new SphinxLoader();
         });
 
-        $app['extension.shop.import_offer_facade'] = $app->share(function($app) {
+        $app['extension.shop.import_offer_facade'] = $app->share(function ($app) {
 
             return new ImportOfferFacade(
                 new DoctrineWriter($app['doctrine.odm.mongodb.dm'], 'Extension\\Shop\\Document\\Product'),
@@ -94,7 +93,7 @@ class Extension extends BaseExtension
             );
         });
 
-        $app['extension.shop.import_warehouse_facade'] = $app->share(function($app) {
+        $app['extension.shop.import_warehouse_facade'] = $app->share(function ($app) {
 
             return new ImportWarehouseFacade(
                 new DoctrineWriter($app['doctrine.odm.mongodb.dm'], 'Extension\\Shop\\Document\\Warehouse'),
@@ -105,7 +104,7 @@ class Extension extends BaseExtension
 
         });
 
-        $app['extension.shop.import_product_facade'] = $app->share(function($app) use($importPath) {
+        $app['extension.shop.import_product_facade'] = $app->share(function ($app) use ($importPath) {
             return new ImportProductFacade(
                 new DoctrineWriter($app['doctrine.odm.mongodb.dm'], 'Extension\\Shop\\Document\\Product'),
                 [
@@ -119,7 +118,7 @@ class Extension extends BaseExtension
             );
         });
 
-        $app['extension.shop.import_category_facade'] = $app->share(function($app) {
+        $app['extension.shop.import_category_facade'] = $app->share(function ($app) {
             return new ImportCategoryFacade(
                 new DoctrineWriter($app['doctrine.odm.mongodb.dm'], 'Extension\\Shop\\Document\\Category'),
                 [
@@ -131,7 +130,7 @@ class Extension extends BaseExtension
         });
 
 
-        $app['extension.shop.import_property_facade'] = $app->share(function($app) {
+        $app['extension.shop.import_property_facade'] = $app->share(function ($app) {
             return new ImportPropertyFacade(
                 new DoctrineWriter($app['doctrine.odm.mongodb.dm'], 'Extension\\Shop\\Document\\ProductProperty'),
                 [
@@ -182,10 +181,11 @@ class Extension extends BaseExtension
                     $app['validator'],
                     $app['bincms.service.mailer'],
                     $app['bincms.service.message_builder'],
+                    $app['dispatcher'],
                     $this->config['reserveDays']
                 ];
             })
-            ->registerExtensionController($this, 'Controller\\ImportController', 'import', function($app) use($importPath) {
+            ->registerExtensionController($this, 'Controller\\ImportController', 'import', function ($app) use ($importPath) {
                 return [
                     $app['extension.shop.repository.product'],
                     $app['extension.shop.repository.import_process'],
@@ -238,8 +238,7 @@ class Extension extends BaseExtension
                     $app['extension.shop.repository.product'],
                     $app['service.converter'],
                 ];
-            })
-        ;
+            });
 
         $app['converter_factory']
             ->registerConverter('Extension\\Shop\\Document\\Category', new CategoryConverter())
@@ -257,9 +256,7 @@ class Extension extends BaseExtension
             ->registerConverter('Extension\\Shop\\Document\\OrderProduct', new OrderProductConverter())
             ->registerConverter('Extension\\Shop\\Document\\Filter', new FilterProductConverter())
             ->registerConverter('Extension\\Shop\\Document\\FilterValue', new FilterValueConverter())
-            ->registerConverter('Extension\\Shop\\Document\\Warehouse', new WarehouseConverter())
-
-        ;
+            ->registerConverter('Extension\\Shop\\Document\\Warehouse', new WarehouseConverter());
     }
 
     public function getCommands(Application $app)

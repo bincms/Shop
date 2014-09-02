@@ -13,6 +13,8 @@ use BinCMS\Repository\CounterRepository;
 use BinCMS\Service\MessageBuilder\MessageBuilder;
 use Extension\Shop\Document\Order;
 use Extension\Shop\Document\OrderProduct;
+use Extension\Shop\Event\Order\OrderCreateAfterEvent;
+use Extension\Shop\Event\Order\OrderCreateBeforeEvent;
 use Extension\Shop\Form\OrderForm;
 use Extension\Shop\Repository\Interfaces\CartRepositoryInterface;
 use Extension\Shop\Repository\Interfaces\DeliveryRepositoryInterface;
@@ -22,6 +24,7 @@ use Extension\Shop\Repository\OrderRepository;
 use Nette\Mail\IMailer;
 use Nette\Mail\Message;
 use Silex\Application;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Validator\Validator;
@@ -75,12 +78,16 @@ class OrderController
      * @var \Extension\Shop\Repository\Interfaces\CartRepositoryInterface
      */
     private $cartRepository;
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     */
+    private $eventDispatcher;
 
     public function __construct(OrderRepository $orderRepository, ShopRepositoryInterface $shopRepository,
                                 ProductRepositoryInterface $productRepository, DeliveryRepositoryInterface $deliveryRepository,
                                 CartRepositoryInterface $cartRepository, CounterRepository $counterRepository,
                                 ConverterService $converterService, Validator $validator,
-                                IMailer $mailer, MessageBuilder $messageBuilder, $reserveDays)
+                                IMailer $mailer, MessageBuilder $messageBuilder, EventDispatcher $eventDispatcher, $reserveDays)
     {
         $this->shopRepository = $shopRepository;
         $this->orderRepository = $orderRepository;
@@ -89,10 +96,11 @@ class OrderController
         $this->productRepository = $productRepository;
         $this->deliveryRepository = $deliveryRepository;
         $this->counterRepository = $counterRepository;
-        $this->reserveDays = $reserveDays;
         $this->messageBuilder = $messageBuilder;
         $this->mailer = $mailer;
         $this->cartRepository = $cartRepository;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->reserveDays = $reserveDays;
     }
 
     /**
@@ -134,6 +142,8 @@ class OrderController
      */
     public function createAction(Application $app, Request $request)
     {
+        $this->eventDispatcher->dispatch(OrderCreateBeforeEvent::NAME, new OrderCreateBeforeEvent($request));
+
         $currentUser = $app->user();
 
         if(null === $currentUser) {
@@ -151,7 +161,7 @@ class OrderController
         }
 
         if(!is_array($orderForm->items)) {
-            return $app->abort(500);
+            $app->abort(500);
         }
 
         /** @var \Extension\Shop\Document\Shop $shop */
@@ -165,7 +175,7 @@ class OrderController
         if($orderForm->deliveryType === DeliveryRepositoryInterface::TP_DELIVERY) {
             $delivery = $this->deliveryRepository->find($orderForm->deliveryId);
             if(null === $delivery) {
-                return $app->abort(500);
+                $app->abort(500);
             }
 
             $address = new Address();
@@ -179,7 +189,7 @@ class OrderController
         } else {
             $shop = $this->shopRepository->find($orderForm->shopId);
             if(null === $shop) {
-                return $app->abort(500);
+                $app->abort(500);
             }
             $order->setAddress($shop->getAddress());
         }
@@ -232,20 +242,18 @@ class OrderController
 
         $this->orderRepository->saveEntity($order);
 
-//        $cart = $this->cartRepository->findByUserOrId($currentUser);
-//        if(null !== $cart) {
-//            $cart->setItems([]);
-//            $this->cartRepository->saveEntity($cart);
-//        }
+        $this->eventDispatcher->dispatch(OrderCreateAfterEvent::NAME, new OrderCreateAfterEvent($order));
 
-        try {
-            $message = $this->messageBuilder->build('extension.Shop.order_user_create', [
-                'order' => $order,
-                'customer' => $currentUser
-            ]);
-            $message->addTo($currentUser->getEmail());
+        return $app->json($this->converterService->convert($order));
 
-            $this->mailer->send($message);
+//        try {
+//            $message = $this->messageBuilder->build('extension.Shop.order_user_create', [
+//                'order' => $order,
+//                'customer' => $currentUser
+//            ]);
+//            $message->addTo($currentUser->getEmail());
+//
+//            $this->mailer->send($message);
 
 //        $adminMessage
 //            ->setFrom('order@etecom.ru')
@@ -254,13 +262,10 @@ class OrderController
 //            ->setBody(strtr('Создан новый заказ № {orderNo}.', [
 //                '{orderNo}' => $order->getNumber()
 //            ]));
-
-
 //        $this->mailer->send($adminMessage);
-        } catch(\Exception $e) {
-        }
 
-        return $app->json($this->converterService->convert($order));
+//        } catch(\Exception $e) {
+//        }
     }
 
     /**
@@ -274,14 +279,14 @@ class OrderController
         $order = $this->orderRepository->find($id);
 
         if(null === $order) {
-            return $app->abort(404);
+            $app->abort(404);
         }
 
         if(!$app['security']->isGranted([User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN])) {
             $currentUser = $app->user();
 
             if(null === $currentUser || $currentUser->getId() !== $order->getCustomer()->getId()) {
-                return $app->abort(500);
+                $app->abort(500);
             }
         }
 
@@ -302,7 +307,7 @@ class OrderController
         $order = $this->orderRepository->find($id);
 
         if(null === $order) {
-            return $app->abort(404);
+            $app->abort(404);
         }
 
         return $app->json(
