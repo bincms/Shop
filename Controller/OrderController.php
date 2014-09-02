@@ -26,6 +26,7 @@ use Silex\Application;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator;
+use BinCMS\Annotations\Route;
 
 class OrderController
 {
