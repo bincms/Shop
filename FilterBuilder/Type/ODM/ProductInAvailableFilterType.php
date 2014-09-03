@@ -7,21 +7,26 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProductInAvailableFilterType extends ODMFilterType
 {
-    private $value;
+    private $isEnabled;
 
     public function apply()
     {
-        $this->queryBuilder->where("function() {
-            var total = 0;
-            for(i in this.availability) {
-                total += this.availability[i];
-            }
-            return total > 0;
-        }");
+        if ($this->isEnabled) {
+            $queryBuilder = $this->queryBuilder;
+
+            $queryBuilder->addAnd($queryBuilder->expr()->where("function() {
+                var total = 0;
+                for(i in this.availability) {
+                    total += this.availability[i];
+                }
+                return total > 0;
+                }")
+            );
+        }
     }
 
     public function bindRequest(Request $request, $filterName, $columnName)
     {
-        $this->value = filter_var($request->get($filterName), \FILTER_VALIDATE_BOOLEAN);
+        $this->isEnabled = filter_var($request->get($filterName), \FILTER_VALIDATE_BOOLEAN);
     }
 }
