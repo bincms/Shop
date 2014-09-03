@@ -216,6 +216,15 @@ class Product
         $this->availability = $availability;
     }
 
+    public function getTotalAvailability()
+    {
+        $totalAvailability = 0;
+        foreach($this->getAvailability() as $value) {
+            $totalAvailability += $value;
+        }
+        return $totalAvailability;
+    }
+
     /**
      * @param mixed $manufacturer
      */

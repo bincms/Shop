@@ -16,19 +16,13 @@ class ProductConverter implements ConverterInterface
 
     private function convertValue(Product $product, ConverterService $converterService, ConverterEventInterface $event)
     {
-        $fullAvailability = 0;
-
-        foreach($product->getAvailability() as $value) {
-            $fullAvailability += $value;
-        }
-
         $result = [
             'id' => $product->getId(),
             'sku' => $product->getSku(),
             'price' => $converterService->convert($product->getPrice()),
             'title' => $product->getTitle(),
             'availability' => $product->getAvailability(),
-            'fullAvailability' => $fullAvailability,
+            'totalAvailability' => $product->getTotalAvailability(),
             'image' => $converterService->convert($product->getImage()),
             'unit' => $product->getUnit(),
             'isNew' => $product->getIsNew(),

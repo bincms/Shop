@@ -1,6 +1,6 @@
 <?php
 
-namespace Extension\Shop\FilterBuilder;
+namespace Extension\Shop\FilterBuilder\Type\ODM;
 
 use BinCMS\FilterBuilder\FilterType\ODMFilterType;
 use Symfony\Component\HttpFoundation\Request;
