@@ -11,7 +11,8 @@ use BinCMS\FilterBuilder\FilterType\ODM\RangeFilterType;
 use BinCMS\FilterBuilder\FilterType\ODM\StringFilterType;
 use Extension\Shop\Document\Product;
 use Extension\Shop\Document\ProductPrice;
-use Extension\Shop\FilterBuilder\ProductFilterType;
+use Extension\Shop\FilterBuilder\Type\ODM\ProductFilterType;
+use Extension\Shop\FilterBuilder\Type\ODM\ProductInAvailableFilterType;
 use Extension\Shop\Form\ProductForm;
 use Extension\Shop\Repository\CategoryRepository;
 use Extension\Shop\Repository\ProductRepository;
@@ -70,12 +71,13 @@ class ProductController
         }
 
         $filterBuilder = new FilterBuilder();
-        $filterBuilder->add('categoryId', 'category', new EqualsFilterType());
+        $filterBuilder->add('category_id', 'category', new EqualsFilterType());
         $filterBuilder->add('sku', 'sku', new StringFilterType());
         $filterBuilder->add('leader', 'isLeader', new BooleanFilterType());
         $filterBuilder->add('ids', 'id', new InFilterType());
-        $filterBuilder->add('query_filter', false, new ProductFilterType());
+        $filterBuilder->add('query_filter', null, new ProductFilterType());
         $filterBuilder->add('price_range', 'price.retail', new RangeFilterType());
+        $filterBuilder->add('in_available', null, new ProductInAvailableFilterType());
 
         $filterBuilder->bindRequest($request);
 
