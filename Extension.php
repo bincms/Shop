@@ -272,7 +272,8 @@ class Extension extends BaseExtension
                     $app['extension.shop.import_product_facade'],
                 ],
                 $app['extension.shop.import_offer_facade'],
-                $app['extension.shop.import_warehouse_facade']
+                $app['extension.shop.import_warehouse_facade'],
+                $app['extension.shop.repository.shop']
             ),
             new BuildFilterCommand(
                 $app['extension.shop.repository.product'],

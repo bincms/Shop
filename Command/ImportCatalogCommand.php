@@ -7,6 +7,8 @@ use Extension\Shop\CommerceML\Offers;
 use Extension\Shop\Facade\ImportFacadeContext;
 use Extension\Shop\Facade\ImportOfferFacade;
 use Extension\Shop\Facade\ImportWarehouseFacade;
+use Extension\Shop\Repository\Interfaces\ShopRepositoryInterface;
+use Extension\Shop\Repository\Interfaces\WarehouseRepositoryInterface;
 use Silex\Application;
 use Extension\Shop\Facade\ImportFacadeInterface;
 use Extension\Shop\Repository\ImportProcessRepository;
@@ -26,17 +28,25 @@ class ImportCatalogCommand extends Command
      * @var \Extension\Shop\Repository\ImportProcessRepository
      */
     private $importProcessRepository;
+
     /**
      * @var \Extension\Shop\Facade\ImportOfferFacade
      */
     private $importOfferFacade;
+
     /**
      * @var \Extension\Shop\Facade\ImportWarehouseFacade
      */
     private $importWarehouseFacade;
 
+    /**
+     * @var ShopRepositoryInterface
+     */
+    private $shopRepository;
+
     public function __construct(ImportProcessRepository $importProcessRepository, array $importFacades,
-                                ImportOfferFacade $importOfferFacade, ImportWarehouseFacade $importWarehouseFacade, $name = null)
+                                ImportOfferFacade $importOfferFacade, ImportWarehouseFacade $importWarehouseFacade,
+                                ShopRepositoryInterface $shopRepository, $name = null)
     {
         parent::__construct($name);
 
@@ -44,6 +54,7 @@ class ImportCatalogCommand extends Command
         $this->importProcessRepository = $importProcessRepository;
         $this->importOfferFacade = $importOfferFacade;
         $this->importWarehouseFacade = $importWarehouseFacade;
+        $this->shopRepository = $shopRepository;
     }
 
     protected function configure()
@@ -111,10 +122,18 @@ class ImportCatalogCommand extends Command
                 }
 
                 $this->importWarehouseFacade->process($importFacadeContext, true);
-
                 $this->importOfferFacade->process($importFacadeContext);
-
                 $this->importProcessRepository->finish($importProcessId);
+
+
+                if(!$document->getCatalog()->isOnlyUpdate()) {
+                    $shops = $this->shopRepository->findAll();
+                    /** @var \Extension\Shop\Document\Shop $shop */
+                    foreach($shops as $shop) {
+                        $shop->setWarehouses([]);
+                        $this->shopRepository->saveEntity($shop);
+                    }
+                }
 
             } catch (\Exception $e) {
                 $this->importProcessRepository->finishError($importProcessId, $e->getMessage());
