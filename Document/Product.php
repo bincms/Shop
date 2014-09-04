@@ -274,7 +274,7 @@ class Product
     }
 
     /**
-     * @return mixed
+     * @return ProductPropertyValue[]
      */
     public function getProperties()
     {
@@ -282,7 +282,7 @@ class Product
     }
 
     /**
-     * @param mixed $properties
+     * @param array $properties
      */
     public function setProperties($properties)
     {
