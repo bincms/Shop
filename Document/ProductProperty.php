@@ -102,7 +102,7 @@ class ProductProperty
     }
 
     /**
-     * @return mixed
+     * @return ProductPropertyOption
      */
     public function getOptions()
     {
