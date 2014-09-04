@@ -102,7 +102,7 @@ class ProductProperty
     }
 
     /**
-     * @return ProductPropertyOption
+     * @return ProductPropertyOption[]
      */
     public function getOptions()
     {
